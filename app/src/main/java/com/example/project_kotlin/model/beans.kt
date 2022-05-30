@@ -59,3 +59,7 @@ data class Source(
 data class RegisterBeans(
     val test: String
 )
+
+data class JwtBeans(
+    val jwt: String
+)

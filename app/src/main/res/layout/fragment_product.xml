@@ -19,11 +19,21 @@
             app:srcCompat="@drawable/a" />
 
 
+        <CheckBox
+            android:id="@+id/checkBox_fav_product"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@android:drawable/btn_star"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintBottom_toBottomOf="@id/img_product_image"
+            app:layout_constraintRight_toRightOf="parent" />
+
         <TextView
             android:id="@+id/tv_product_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="40dp"
+            android:layout_margin="40dp"
             android:text="hello_fragment"
             android:textStyle="bold"
             android:layout_marginTop="40dp"
@@ -34,8 +44,8 @@
             android:id="@+id/tv_product_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_margin="40dp"
             android:text="10 "
-            android:layout_marginTop="40dp"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/img_product_image" />
 
@@ -43,7 +53,7 @@
             android:id="@+id/tv_product_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_margin="40dp"
             android:text="description"
             app:layout_constraintTop_toBottomOf="@id/tv_product_title" />
 
@@ -57,6 +67,7 @@
             android:layout_marginBottom="80dp"
 
             />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

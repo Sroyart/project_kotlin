@@ -7,6 +7,7 @@ import kotlin.concurrent.thread
 class ArticlesViewModel : ViewModel() {
     val data = MutableLiveData<ArticlesBeans?>()
     val dataElk = MutableLiveData<ElkBeans?>()
+    val dataConn = MutableLiveData<JwtBeans?>()
     val dataRegister = MutableLiveData<String?>()
     val errorMessage = MutableLiveData<String?>()
     val threadRunning = MutableLiveData<Boolean>(false)
@@ -67,5 +68,25 @@ class ArticlesViewModel : ViewModel() {
             }
             threadRunning.postValue(false)
         }
+    }
+
+    fun postConn(myUrl: String, query: String) {
+        threadRunning.postValue(true)
+        dataConn.postValue(null)
+        errorMessage.postValue(null)
+        thread {
+
+            try {
+                dataConn.postValue(
+                    RequestUtils.connPost(myUrl, query)
+                )
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                errorMessage.postValue(e.message)
+            }
+            threadRunning.postValue(false)
+        }
+
     }
 }

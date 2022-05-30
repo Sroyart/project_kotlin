@@ -25,6 +25,7 @@ class HomeFragment : Fragment() {
     lateinit var titles: Array<String>
     lateinit var details: Array<String>
     lateinit var prices: Array<Int>
+    lateinit var ids: Array<Int>
 
 
     override fun onCreateView(
@@ -52,6 +53,7 @@ class HomeFragment : Fragment() {
         titles = arrayOf()
         details = arrayOf()
         prices = arrayOf()
+        ids = arrayOf()
 
         model.loadData()
 
@@ -77,6 +79,7 @@ class HomeFragment : Fragment() {
                         titles += arrayOf(it[i].name)
                         details += arrayOf(it[i].description)
                         prices += arrayOf(it[i].price)
+                        ids += arrayOf(it[i].id)
                     }
                 }
                 getUserdata()
@@ -90,7 +93,7 @@ class HomeFragment : Fragment() {
     private fun getUserdata() {
         newArrayList = arrayListOf<ProductsData>()
         for (i in titles.indices) {
-            val product = ProductsData(images[i], titles[i], details[i], prices[i])
+            val product = ProductsData(images[i], titles[i], details[i], prices[i], ids[i])
             newArrayList.add(product)
         }
 
@@ -105,6 +108,7 @@ class HomeFragment : Fragment() {
                 bundle.putString("titleDetail", newArrayList[position].detail)
                 bundle.putString("titleImage", newArrayList[position].image)
                 bundle.putInt("titlePrice", newArrayList[position].price)
+                bundle.putInt("idData", newArrayList[position].id)
                 val fragment = ProductFragment()
                 fragment.arguments = bundle
                 fragmentManager?.beginTransaction()?.replace(R.id.fragment_container, fragment)

@@ -17,6 +17,7 @@ class ProductList : AppCompatActivity() {
     lateinit var titles: Array<String>
     lateinit var details: Array<String>
     lateinit var prices: Array<Int>
+    lateinit var ids: Array<Int>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_product_list)
@@ -24,6 +25,7 @@ class ProductList : AppCompatActivity() {
         imageId = arrayOf("", "", "")
         titles = arrayOf("Meuble 1", "Meuble 2", "Meuble 3")
         details = arrayOf("Detail Meuble 1", "Detail Meuble 2", "Detail Meuble 3")
+        ids = arrayOf()
 
         newRecyclerView = findViewById<RecyclerView>(R.id.recyclerView)
 
@@ -70,7 +72,7 @@ class ProductList : AppCompatActivity() {
 
     private fun getUserdata() {
         for (i in imageId.indices) {
-            val product = ProductsData(imageId[i], titles[i], details[i], prices[i])
+            val product = ProductsData(imageId[i], titles[i], details[i], prices[i], ids[i])
             newArrayList.add(product)
         }
         tempArrayList.addAll(newArrayList)

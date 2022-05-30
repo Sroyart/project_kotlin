@@ -3,13 +3,120 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.AdressPaymentFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_margin="20dp">
+
+        <TextView
+            android:id="@+id/tv_delivery"
+            android:layout_width="wrap_content"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="20dp"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:text="Adresse de livraison" />
+
+        <TextView
+            android:id="@+id/tv_address_payment_firstName"
+            android:layout_width="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:textStyle="bold"
+            android:text="Prénom"
+            app:layout_constraintTop_toBottomOf="@id/tv_delivery" />
+
+        <EditText
+            android:id="@+id/et_address_payment_firstName"
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_address_payment_firstName" />
+
+        <TextView
+            android:id="@+id/tv_address_payment_lastName"
+            android:layout_width="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:textStyle="bold"
+            android:text="Nom prénom"
+            app:layout_constraintTop_toBottomOf="@id/et_address_payment_firstName" />
+
+        <EditText
+            android:id="@+id/et_address_payment_lastName"
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_address_payment_lastName" />
+
+        <TextView
+            android:id="@+id/tv_address_payment_address"
+            android:layout_width="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:textStyle="bold"
+            android:text="Adresse"
+            app:layout_constraintTop_toBottomOf="@id/et_address_payment_lastName" />
+
+        <EditText
+            android:id="@+id/et_address_payment_address"
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_address_payment_address" />
+
+        <TextView
+            android:id="@+id/tv_address_payment_postal"
+            android:layout_width="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:textStyle="bold"
+            android:text="Code postal"
+            app:layout_constraintTop_toBottomOf="@id/et_address_payment_address" />
+
+        <EditText
+            android:id="@+id/et_address_payment_postal"
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_address_payment_postal" />
+
+        <TextView
+            android:id="@+id/tv_address_payment_city"
+            android:layout_width="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:textStyle="bold"
+            android:text="Ville"
+            app:layout_constraintTop_toBottomOf="@id/et_address_payment_postal" />
+
+        <EditText
+            android:id="@+id/et_address_payment_city"
+            android:inputType="text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_address_payment_city" />
+
+        <Button
+            android:id="@+id/btn_address_payment_next"
+            app:layout_constraintTop_toBottomOf="@id/et_address_payment_city"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Suivant" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </FrameLayout>

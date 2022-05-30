@@ -26,6 +26,7 @@ class FilterSearchFragment : Fragment() {
     lateinit var titles: Array<String>
     lateinit var details: Array<String>
     lateinit var prices: Array<Int>
+    lateinit var ids: Array<Int>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,11 +46,21 @@ class FilterSearchFragment : Fragment() {
         titles = arrayOf()
         details = arrayOf("Detail Meuble 1", "Detail Meuble 2", "Detail Meuble 3")
         prices = arrayOf()
+        ids = arrayOf()
 
         showMeArrayList(titles)
 
-        model.loadData()
+//        model.loadData()
         //model.loadPostData("")
+        model.loadPostData(
+            "http://10.0.2.2:8081/api/elk/fuzzy",
+            "{\n" +
+                    "    \"name\":\"\",\n" +
+                    "    \"category\":[\"kitchen\"],\n" +
+                    "    \"material\":[],\n" +
+                    "    \"color\":[]\n" +
+                    "}"
+        )
 
 
         newRecyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
@@ -170,7 +181,7 @@ class FilterSearchFragment : Fragment() {
         newArrayList = arrayListOf<ProductsData>()
         tempArrayList = arrayListOf<ProductsData>()
         for (i in titles.indices) {
-            val product = ProductsData(imageId[i], titles[i], details[0], prices[i])
+            val product = ProductsData(imageId[i], titles[i], details[0], prices[i], ids[i])
             newArrayList.add(product)
         }
         println(newArrayList)

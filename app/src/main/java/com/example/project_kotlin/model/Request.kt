@@ -44,6 +44,21 @@ class RequestUtils {
             return "article"
         }
 
+        fun connPost(myUrl: String, query: String): JwtBeans {
+            println(myUrl.format(""))
+            var json: String = sendPost(
+                myUrl.format(""), query
+            )
+            json = "{\n" +
+                    "    \"jwt\":\"${json}\"\n" +
+                    "}"
+
+            val article = gson.fromJson(json, JwtBeans::class.java)
+
+
+            return article
+        }
+
 
         fun sendGet(url: String): String {
             println("url : $url")

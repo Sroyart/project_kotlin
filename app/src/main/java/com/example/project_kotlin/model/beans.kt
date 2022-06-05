@@ -53,7 +53,8 @@ data class Source(
     val category: List<Any>,
     val color: List<Any>,
     val material: List<Any>,
-    val name: String
+    val name: String,
+    val articleId: Int
 )
 
 data class RegisterBeans(

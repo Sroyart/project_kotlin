@@ -1,7 +1,7 @@
 <resources>
     <string name="open">Open</string>
     <string name="close">Close</string>
-    <string name="app_name" parent="Theme.AppCompat.Light.NoActionBar">project x</string>
+    <string name="app_name" parent="Theme.AppCompat.Light.NoActionBar">Castor Hameaux</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="large_text">

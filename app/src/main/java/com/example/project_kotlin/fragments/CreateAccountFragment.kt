@@ -24,7 +24,7 @@ class CreateAccountFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_create_account, container, false)
         val connBtn: Button = view.findViewById(R.id.btn_conn_account)
         connBtn.setOnClickListener {
-            val fragment = PersonFragment()
+            val fragment = ConnectionFragment()
             val transaction = fragmentManager?.beginTransaction()
             transaction?.replace(R.id.fragment_container, fragment)?.commit()
         }
@@ -40,10 +40,10 @@ class CreateAccountFragment : Fragment() {
                 model.postRegister(
                     "http://10.0.2.2:8082/register",
                     "{\n" +
-                            "    \"password\": \"test\",\n" +
-                            "    \"email\": \"arthur.iouzalen@supdevinci-edu.fr\",\n" +
-                            "    \"firstName\": \"arthur\",\n" +
-                            "    \"lastName\":\"iouzalen\"\n" +
+                            "    \"password\": \"${et_create_password.text}\",\n" +
+                            "    \"email\":\"${et_create_email.text}\",\n" +
+                            "    \"firstName\": \"${et_create_firstName.text}\",\n" +
+                            "    \"lastName\":\"${et_create_lastName.text}\"\n" +
                             "}"
                 )
             }

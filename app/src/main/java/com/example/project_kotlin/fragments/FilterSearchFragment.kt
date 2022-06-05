@@ -8,7 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.project_kotlin.*
+import com.example.project_kotlin.Product
+import com.example.project_kotlin.ProductsData
+import com.example.project_kotlin.R
+import com.example.project_kotlin.RecyclerAdapter
+import com.example.project_kotlin.dialogFragment.FilterDialogFragment
 import com.example.project_kotlin.model.ArticlesViewModel
 import kotlinx.android.synthetic.main.fragment_filter_search.*
 import java.util.*
@@ -50,7 +54,7 @@ class FilterSearchFragment : Fragment() {
 
         showMeArrayList(titles)
 
-//        model.loadData()
+        model.loadData()
         //model.loadPostData("")
         model.loadPostData(
             "http://10.0.2.2:8081/api/elk/fuzzy",
@@ -84,6 +88,8 @@ class FilterSearchFragment : Fragment() {
                         imageId += arrayOf(it[i].imagePath)
                         titles += arrayOf(it[i].name)
                         prices += arrayOf(it[i].price)
+                        details += arrayOf(it[i].description)
+                        ids += arrayOf(i)
                     }
                 }
                 getUserdata()
@@ -104,6 +110,8 @@ class FilterSearchFragment : Fragment() {
                         println(it.hits.hits[i])
                         titles += arrayOf(it.hits.hits[i]._index)
                         prices += arrayOf(10)
+                        details += arrayOf("Description")
+                        ids += arrayOf(it.hits.hits[i]._source.articleId)
                     }
                     showMeArrayList(titles)
                     getUserdata()
@@ -181,7 +189,7 @@ class FilterSearchFragment : Fragment() {
         newArrayList = arrayListOf<ProductsData>()
         tempArrayList = arrayListOf<ProductsData>()
         for (i in titles.indices) {
-            val product = ProductsData(imageId[i], titles[i], details[0], prices[i], ids[i])
+            val product = ProductsData(imageId[i], titles[i], details[i], prices[i], ids[i])
             newArrayList.add(product)
         }
         println(newArrayList)

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="DemoTheme" parent="Theme.AppCompat.Light">
+        <!--        <item name="android:statusBarColor">#6C4A00</item>-->
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/white</item>
+        <item name="colorAccent">@color/white</item>
+        <!---Below is the code for status bar color-->
+        <item name="android:statusBarColor">@color/black</item>
+    </style>
+</resources>

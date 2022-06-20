@@ -1,5 +1,7 @@
 package com.example.project_kotlin.fragments
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,22 +11,17 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.auth0.android.jwt.JWT
 import com.example.project_kotlin.R
 import com.example.project_kotlin.dialogFragment.ForgotPasswordDialogFragment
 import com.example.project_kotlin.model.ArticlesViewModel
-import com.example.project_kotlin.model.UserViewModel
 import kotlinx.android.synthetic.main.fragment_person.*
 
 
 class ConnectionFragment : Fragment() {
     val model by lazy { ViewModelProvider(this).get(ArticlesViewModel::class.java) }
-
-    //    val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
     val homeFragment = HomeFragment()
-    val transaction = fragmentManager?.beginTransaction()
 
-    private lateinit var userViewModel: UserViewModel
+    lateinit var sharedPreferences: SharedPreferences
 
 
     override fun onCreateView(
@@ -39,27 +36,11 @@ class ConnectionFragment : Fragment() {
             val transaction = fragmentManager?.beginTransaction()
             transaction?.replace(R.id.fragment_container, fragment)?.commit()
         }
-//        var btnConn: Button = view.findViewById(R.id.btn_conn)
-//        btnConn.setOnClickListener {
-////            if (et_person_email.text.isNullOrBlank()) {
-////                Toast.makeText(context, "Remplissez le champ", Toast.LENGTH_SHORT).show()
-////            } else {
-////
-////            }
-//        }
-
-
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
-
-        userViewModel.readFromDataStore.observe(
-            viewLifecycleOwner,
-            { email -> tv_person_first_name.text = email })
 
 
         var btnConn: Button = view.findViewById(R.id.btn_conn)
@@ -67,9 +48,11 @@ class ConnectionFragment : Fragment() {
         var tvPersonPassword: TextView = view.findViewById(R.id.et_person_password)
 
         btnConn.setOnClickListener {
+
             if (et_person_email.text.isNullOrBlank()) {
                 Toast.makeText(context, "Remplissez le champ", Toast.LENGTH_SHORT).show()
             } else {
+                println("action")
                 model.postConn(
                     "http://10.0.2.2:8082/sign-in",
                     "{\n" +
@@ -92,20 +75,30 @@ class ConnectionFragment : Fragment() {
         }
 
         model.dataConn.observe(viewLifecycleOwner) {
+            sharedPreferences = activity?.getSharedPreferences("JWT", Context.MODE_PRIVATE)!!
 
+            println("its in")
             if (it != null) {
-                println("model eclenché")
-                val jwt = JWT(it.jwt)
-                userViewModel.saveToDataStore("testDataStore")
+                println(it.jwt)
 
-                transaction?.replace(R.id.fragment_container, homeFragment)?.commit()
+                val editor: SharedPreferences.Editor = sharedPreferences.edit()
+                editor.putString("JWT", it.jwt)
+                editor.apply()
 
-//                var claim: String? = jwt.getClaim("firstName").asString()
-//                var lastName: String? = jwt.getClaim("lastName").asString()
-//                println(claim)
-//                tv_person_first_name.text = claim
-//                tv_person_last_name.text = lastName
+                Toast.makeText(context, "Information saved", Toast.LENGTH_LONG).show()
+                replaceFragment(homeFragment)
             }
+
+
+        }
+    }
+
+    private fun replaceFragment(fragment: Fragment) {
+        println(fragment)
+        if (fragment != null) {
+            val transaction = requireActivity().supportFragmentManager.beginTransaction()
+            transaction.replace(R.id.fragment_container, fragment)
+            transaction.commit()
         }
     }
 

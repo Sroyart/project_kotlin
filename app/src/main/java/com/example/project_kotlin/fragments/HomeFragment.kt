@@ -1,5 +1,6 @@
 package com.example.project_kotlin.fragments
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -26,6 +27,7 @@ class HomeFragment : Fragment() {
     lateinit var details: Array<String>
     lateinit var prices: Array<Int>
     lateinit var ids: Array<Int>
+    lateinit var preferences: SharedPreferences
 
 
     override fun onCreateView(
@@ -67,6 +69,8 @@ class HomeFragment : Fragment() {
         //getUserdata()
 
         model.data.observe(viewLifecycleOwner) {
+
+            println("test2")
             titles = arrayOf()
 
             if (it?.get(0)?.name.isNullOrEmpty()) {

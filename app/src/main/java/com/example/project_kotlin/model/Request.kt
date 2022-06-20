@@ -17,7 +17,8 @@ class RequestUtils {
             println(myUrl.format(myArticle))
             val json: String = sendGet(myUrl.format(myArticle))
             val article = gson.fromJson(json, ArticlesBeans::class.java)
-            println("json : $article")
+
+            println("test1")
 
             return article
         }
@@ -28,7 +29,6 @@ class RequestUtils {
                 myUrl.format(""), query
             )
             val article = gson.fromJson(json, ElkBeans::class.java)
-            println("json : $article")
 
             return article
         }
@@ -39,7 +39,6 @@ class RequestUtils {
                 myUrl.format(""), query
             )
             val article = gson.fromJson(json, RegisterBeans::class.java)
-            println("json : $article")
 
             return "article"
         }
@@ -49,12 +48,12 @@ class RequestUtils {
             var json: String = sendPost(
                 myUrl.format(""), query
             )
-            json = "{\n" +
-                    "    \"jwt\":\"${json}\"\n" +
-                    "}"
+            json = "{\"jwt\":\"${json}\"}"
+
 
             val article = gson.fromJson(json, JwtBeans::class.java)
 
+            println(article)
 
             return article
         }

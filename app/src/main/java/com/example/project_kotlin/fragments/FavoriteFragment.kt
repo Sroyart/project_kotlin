@@ -7,11 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import com.auth0.android.jwt.JWT
 import com.example.project_kotlin.R
+import com.example.project_kotlin.model.ArticlesViewModel
 
 
 class FavoriteFragment : Fragment() {
     lateinit var preferences: SharedPreferences
+    val model by lazy { ViewModelProvider(this).get(ArticlesViewModel::class.java) }
 
 
     override fun onCreateView(
@@ -29,7 +33,19 @@ class FavoriteFragment : Fragment() {
 
         val myJwt = preferences.getString("JWT", "")
         println(myJwt)
-        
+        if (myJwt.isNullOrEmpty()) {
+            println("JWT null")
+        } else {
+            val jwt = JWT(myJwt)
+            var claim: String? = jwt.getClaim("id").asString()
+            println(claim)
+
+            model.loadFavoritesData("http://10.0.2.2:8083/favorite/15")
+        }
+
+        model.dataFavorite.observe(viewLifecycleOwner) {
+            println(it)
+        }
 
     }
 

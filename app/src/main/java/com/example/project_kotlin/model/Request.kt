@@ -18,9 +18,17 @@ class RequestUtils {
             val json: String = sendGet(myUrl.format(myArticle))
             val article = gson.fromJson(json, ArticlesBeans::class.java)
 
+            return article
+        }
+
+        fun loadFavoritesArticles(myArticle: String, myUrl: String): FavorieBeansItems {
+            println(myUrl.format(myArticle))
+            val json: String = sendGet(myUrl.format(myArticle))
+            val favorites = gson.fromJson(json, FavorieBeansItems::class.java)
+
             println("test1")
 
-            return article
+            return favorites
         }
 
         fun loadPost(myUrl: String, query: String): ElkBeans {

@@ -1,6 +1,5 @@
 package com.example.project_kotlin.fragments
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -27,26 +26,14 @@ class HomeFragment : Fragment() {
     lateinit var details: Array<String>
     lateinit var prices: Array<Int>
     lateinit var ids: Array<Int>
-    lateinit var preferences: SharedPreferences
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_home, container, false)
 
-        return view
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-//        layoutManager = GridLayoutManager(context,2,RecyclerView.VERTICAL,false)
-//        recyclerView.layoutManager = layoutManager
-//        adapter = RecyclerAdapter()
-//        recyclerView.adapter = adapter
-
-
+        return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,18 +46,15 @@ class HomeFragment : Fragment() {
 
         model.loadData()
 
-        newRecyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
+        newRecyclerView = view.findViewById(R.id.recyclerView)
 
         newRecyclerView.layoutManager = GridLayoutManager(context, 2, RecyclerView.VERTICAL, false)
         newRecyclerView.setHasFixedSize(true)
 
-        newArrayList = arrayListOf<ProductsData>()
+        newArrayList = arrayListOf()
 
-        //getUserdata()
 
         model.data.observe(viewLifecycleOwner) {
-
-            println("test2")
             titles = arrayOf()
 
             if (it?.get(0)?.name.isNullOrEmpty()) {
@@ -95,7 +79,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun getUserdata() {
-        newArrayList = arrayListOf<ProductsData>()
+        newArrayList = arrayListOf()
         for (i in titles.indices) {
             val product = ProductsData(images[i], titles[i], details[i], prices[i], ids[i])
             newArrayList.add(product)
@@ -106,7 +90,6 @@ class HomeFragment : Fragment() {
 
         adapter.setOnItemClickListener(object : RecyclerAdapter.onItemClickListener {
             override fun onItemClick(position: Int) {
-//                val intent = Intent(context, Product::class.java)
                 val bundle = Bundle()
                 bundle.putString("titleData", newArrayList[position].title)
                 bundle.putString("titleDetail", newArrayList[position].detail)
@@ -117,10 +100,6 @@ class HomeFragment : Fragment() {
                 fragment.arguments = bundle
                 fragmentManager?.beginTransaction()?.replace(R.id.fragment_container, fragment)
                     ?.commit()
-//                intent.putExtra("images", newArrayList[position].image)
-//                intent.putExtra("titles", newArrayList[position].title)
-//                intent.putExtra("details", newArrayList[position].detail)
-//                startActivity(intent)
             }
 
         })

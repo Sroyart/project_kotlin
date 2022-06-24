@@ -54,7 +54,7 @@ class FilterSearchFragment : Fragment() {
 
         showMeArrayList(titles)
 
-        model.loadData()
+        model.loadData("")
         //model.loadPostData("")
         model.loadPostData(
             "http://10.0.2.2:8081/api/elk/fuzzy",

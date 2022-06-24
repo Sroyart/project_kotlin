@@ -44,7 +44,7 @@ class HomeFragment : Fragment() {
         prices = arrayOf()
         ids = arrayOf()
 
-        model.loadData()
+        model.loadData("")
 
         newRecyclerView = view.findViewById(R.id.recyclerView)
 

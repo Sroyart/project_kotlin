@@ -8,12 +8,13 @@ class ArticlesViewModel : ViewModel() {
     val data = MutableLiveData<ArticlesBeans?>()
     val dataElk = MutableLiveData<ElkBeans?>()
     val dataConn = MutableLiveData<JwtBeans?>()
+    val dataOne = MutableLiveData<ArticlesBeansItem?>()
     val dataRegister = MutableLiveData<String?>()
     val errorMessage = MutableLiveData<String?>()
     val threadRunning = MutableLiveData<Boolean>(false)
     val dataFavorite = MutableLiveData<FavorieBeansItems?>()
 
-    fun loadData() {
+    fun loadData(id: String) {
         threadRunning.postValue(true)
         data.postValue(null)
         dataElk.postValue(null)
@@ -24,7 +25,27 @@ class ArticlesViewModel : ViewModel() {
                 data.postValue(
                     RequestUtils.loadArticles(
                         "",
-                        "http://10.0.2.2:80/api/articles"
+                        "http://10.0.2.2:80/api/articles/$id"
+                    )
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
+                errorMessage.postValue(e.message)
+            }
+            threadRunning.postValue(false)
+        }
+    }
+
+    fun loadOneData(id: String) {
+        threadRunning.postValue(true)
+        dataOne.postValue(null)
+        errorMessage.postValue(null)
+        thread {
+
+            try {
+                dataOne.postValue(
+                    RequestUtils.loadOneArticles(
+                        "http://10.0.2.2:80/api/articles/$id"
                     )
                 )
             } catch (e: Exception) {

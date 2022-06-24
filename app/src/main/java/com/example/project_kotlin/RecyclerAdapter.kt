@@ -29,7 +29,6 @@ class RecyclerAdapter(
         val searchView =
             LayoutInflater.from(parent.context).inflate(R.layout.search_layout, parent, false)
         if (wichActivity === "searchView") {
-            println("search")
             itemView = searchView
         }
         return ViewHolder(itemView, mListener)

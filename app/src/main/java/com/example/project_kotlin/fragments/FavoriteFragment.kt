@@ -34,44 +34,50 @@ class FavoriteFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_favorite, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        images = arrayOf()
+        titles = arrayOf()
+        details = arrayOf()
+        prices = arrayOf()
+        ids = arrayOf()
 
         preferences = activity?.getSharedPreferences("JWT", Context.MODE_PRIVATE)!!
 
         val myJwt = preferences.getString("JWT", "")
-        println(myJwt)
         if (myJwt.isNullOrEmpty()) {
             println("JWT null")
         } else {
             val jwt = JWT(myJwt)
             var claim: String? = jwt.getClaim("id").asString()
-            println(claim)
 
             model.loadFavoritesData("http://10.0.2.2:8083/favorite/15")
         }
 
         model.dataFavorite.observe(viewLifecycleOwner) {
             if (it != null) {
+                println(it)
                 for (i in it.boxElements) {
                     ids += arrayOf(i.boxEmb.articleId)
+//                    println(i.boxEmb.articleId.toString())
+                    model.loadOneData(i.boxEmb.articleId.toString())
                 }
             }
         }
 
-        images = arrayOf(
-            "https://via.placeholder.com/350x150",
-            "https://via.placeholder.com/350x150",
-            "https://via.placeholder.com/350x150"
-        )
-        titles = arrayOf("titles", "titles", "titles")
-        details = arrayOf("details", "details", "details")
-        prices = arrayOf(1, 2, 3)
-        ids = arrayOf(1, 2, 3)
+        model.dataOne.observe(viewLifecycleOwner) {
+            if (it != null) {
+                println(it.id)
+                images += arrayOf(it.imagePath)
+                details += arrayOf(it.description)
+                prices += arrayOf(it.price)
+                titles += arrayOf(it.name)
+            }
+            getUserdata()
+        }
 
         newRecyclerView = view.findViewById(R.id.recyclerView)
 
@@ -80,7 +86,6 @@ class FavoriteFragment : Fragment() {
 
         newArrayList = arrayListOf()
 
-        getUserdata()
 
     }
 

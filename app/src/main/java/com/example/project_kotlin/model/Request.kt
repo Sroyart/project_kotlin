@@ -15,8 +15,15 @@ class RequestUtils {
     companion object {
         fun loadArticles(myArticle: String, myUrl: String): ArticlesBeans {
             println(myUrl.format(myArticle))
-            val json: String = sendGet(myUrl.format(myArticle))
+            val json: String = sendGet(myUrl.format())
             val article = gson.fromJson(json, ArticlesBeans::class.java)
+
+            return article
+        }
+
+        fun loadOneArticles(myUrl: String): ArticlesBeansItem {
+            val json: String = sendGet(myUrl.format())
+            val article = gson.fromJson(json, ArticlesBeansItem::class.java)
 
             return article
         }
@@ -68,7 +75,6 @@ class RequestUtils {
 
 
         fun sendGet(url: String): String {
-            println("url : $url")
             val request = Request.Builder().url(url).build()
             println(request)
             return client.newCall(request).execute().use {

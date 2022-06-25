@@ -14,7 +14,6 @@ val client = OkHttpClient()
 class RequestUtils {
     companion object {
         fun loadArticles(myArticle: String, myUrl: String): ArticlesBeans {
-            println(myUrl.format(myArticle))
             val json: String = sendGet(myUrl.format())
             val article = gson.fromJson(json, ArticlesBeans::class.java)
 
@@ -28,18 +27,13 @@ class RequestUtils {
             return article
         }
 
-        fun loadFavoritesArticles(myArticle: String, myUrl: String): FavorieBeansItems {
-            println(myUrl.format(myArticle))
+        fun loadFavoritesArticles(myArticle: String, myUrl: String): BasketFavoriteBeansItems {
             val json: String = sendGet(myUrl.format(myArticle))
-            val favorites = gson.fromJson(json, FavorieBeansItems::class.java)
-
-            println("test1")
-
+            val favorites = gson.fromJson(json, BasketFavoriteBeansItems::class.java)
             return favorites
         }
 
         fun loadPost(myUrl: String, query: String): ElkBeans {
-            println(myUrl.format(""))
             val json: String = sendPost(
                 myUrl.format(""), query
             )
@@ -49,7 +43,6 @@ class RequestUtils {
         }
 
         fun registerPost(myUrl: String, query: String): String {
-            println(myUrl.format(""))
             val json: String = sendPost(
                 myUrl.format(""), query
             )
@@ -59,7 +52,6 @@ class RequestUtils {
         }
 
         fun connPost(myUrl: String, query: String): JwtBeans {
-            println(myUrl.format(""))
             var json: String = sendPost(
                 myUrl.format(""), query
             )
@@ -76,7 +68,6 @@ class RequestUtils {
 
         fun sendGet(url: String): String {
             val request = Request.Builder().url(url).build()
-            println(request)
             return client.newCall(request).execute().use {
                 if (!it.isSuccessful) {
                     throw Exception("Réponse du serveur incorrect :${it.code}")
@@ -86,7 +77,6 @@ class RequestUtils {
         }
 
         fun sendPost(url: String, paramJson: String): String {
-            println("url : $url")
             println(paramJson)
 
             //Corps de la requête

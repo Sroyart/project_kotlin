@@ -64,18 +64,3 @@ data class RegisterBeans(
 data class JwtBeans(
     val jwt: String
 )
-
-data class FavorieBeansItems(
-    val boxElements: List<BoxElement>,
-    val customerId: Int,
-    val id: Int
-)
-
-data class BoxElement(
-    val boxEmb: BoxEmb,
-    val id: Int
-)
-
-data class BoxEmb(
-    val articleId: Int
-)

@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.project_kotlin.ProductsData
 import com.example.project_kotlin.R
-import com.example.project_kotlin.RecyclerAdapter
+import com.example.project_kotlin.Recycler.RecyclerAdapter
 import com.example.project_kotlin.model.ArticlesViewModel
 
 class HomeFragment : Fragment() {

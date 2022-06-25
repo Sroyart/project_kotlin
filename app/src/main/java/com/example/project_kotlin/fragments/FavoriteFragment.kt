@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.auth0.android.jwt.JWT
 import com.example.project_kotlin.ProductsData
 import com.example.project_kotlin.R
-import com.example.project_kotlin.RecyclerAdapter
+import com.example.project_kotlin.Recycler.RecyclerAdapter
 import com.example.project_kotlin.model.ArticlesViewModel
 
 
@@ -54,29 +54,46 @@ class FavoriteFragment : Fragment() {
             val jwt = JWT(myJwt)
             var claim: String? = jwt.getClaim("id").asString()
 
-            model.loadFavoritesData("http://10.0.2.2:8083/favorite/15")
+            model.loadFavoritesData("http://10.0.2.2:8083/favorite/$claim")
         }
 
+//        model.dataFavorite.observe(viewLifecycleOwner) {
+//            println("test")
+//            println(it)
+//            println("test")
+//
+//            if (it != null) {
+//                for (i in it.boxElements) {
+//                    ids += arrayOf(i.boxEmb.articleId)
+//                    model.loadOneData(i.boxEmb.articleId.toString())
+//                }
+//                getUserdata()
+//            }
+//        }
         model.dataFavorite.observe(viewLifecycleOwner) {
-            if (it != null) {
-                println(it)
+
+            if ((it != null) && (model.threadFavoriteRunning.value == false)) {
                 for (i in it.boxElements) {
+                    println("test")
                     ids += arrayOf(i.boxEmb.articleId)
-//                    println(i.boxEmb.articleId.toString())
                     model.loadOneData(i.boxEmb.articleId.toString())
                 }
+
             }
         }
 
         model.dataOne.observe(viewLifecycleOwner) {
-            if (it != null) {
-                println(it.id)
+//            println("threadOneFavoriteRunning : $it")
+//            println(model.dataOne.value)
+            if (it != null && model.threadOneFavoriteRunning.value == false) {
                 images += arrayOf(it.imagePath)
                 details += arrayOf(it.description)
                 prices += arrayOf(it.price)
                 titles += arrayOf(it.name)
+                showMeArrayList(titles)
+                getUserdata()
+
             }
-            getUserdata()
         }
 
         newRecyclerView = view.findViewById(R.id.recyclerView)
@@ -91,6 +108,7 @@ class FavoriteFragment : Fragment() {
 
     private fun getUserdata() {
         newArrayList = arrayListOf()
+        println(titles.indices)
         for (i in titles.indices) {
             val product = ProductsData(images[i], titles[i], details[i], prices[i], ids[i])
             newArrayList.add(product)
@@ -116,5 +134,10 @@ class FavoriteFragment : Fragment() {
         })
     }
 
+    private fun showMeArrayList(arrayList: Array<String>) {
+        for (element in arrayList) {
+            println(element)
+        }
+    }
 
 }

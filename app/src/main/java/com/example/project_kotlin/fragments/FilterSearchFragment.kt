@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.project_kotlin.Product
 import com.example.project_kotlin.ProductsData
 import com.example.project_kotlin.R
-import com.example.project_kotlin.RecyclerAdapter
+import com.example.project_kotlin.Recycler.RecyclerAdapter
 import com.example.project_kotlin.dialogFragment.FilterDialogFragment
 import com.example.project_kotlin.model.ArticlesViewModel
 import kotlinx.android.synthetic.main.fragment_filter_search.*
@@ -37,7 +37,14 @@ class FilterSearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        return inflater.inflate(R.layout.fragment_filter_search, container, false)
+        val view = inflater.inflate(R.layout.fragment_filter_search, container, false)
+
+        val args = this.arguments
+        val type = args?.get("type")
+        println("type")
+        println(type)
+        println("type")
+        return view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -52,7 +59,6 @@ class FilterSearchFragment : Fragment() {
         prices = arrayOf()
         ids = arrayOf()
 
-        showMeArrayList(titles)
 
         model.loadData("")
         //model.loadPostData("")
@@ -102,7 +108,6 @@ class FilterSearchFragment : Fragment() {
             if (it === null) {
                 println("nothing")
             } else {
-                println("something")
                 if (it.hits.hits.isNotEmpty()) {
                     println(it.hits.hits[0])
                     titles = arrayOf()
@@ -113,11 +118,9 @@ class FilterSearchFragment : Fragment() {
                         details += arrayOf("Description")
                         ids += arrayOf(it.hits.hits[i]._source.articleId)
                     }
-                    showMeArrayList(titles)
                     getUserdata()
 
                 } else {
-                    println("hits is equal to something")
                     println(it.hits.hits.size)
                 }
 //                println("hits : " + it?.hits?.hits[0])
@@ -192,7 +195,6 @@ class FilterSearchFragment : Fragment() {
             val product = ProductsData(imageId[i], titles[i], details[i], prices[i], ids[i])
             newArrayList.add(product)
         }
-        println(newArrayList)
 
         var adapter = RecyclerAdapter(newArrayList, "searchView")
         newRecyclerView.adapter = adapter

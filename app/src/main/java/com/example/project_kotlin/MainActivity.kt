@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
     private val searchFragment = SearchFragment()
     private val userInfo = UserInfo()
     private val favoriteFragment = FavoriteFragment()
+    private val basketFragment = BasketFragment()
     lateinit var toggle: ActionBarDrawerToggle
     lateinit var preferences: SharedPreferences
 
@@ -37,46 +38,28 @@ class MainActivity : AppCompatActivity() {
             when (it.itemId) {
                 R.id.ic_home -> replaceFragment(homeFragment)
                 R.id.ic_search -> replaceFragment(searchFragment)
-                R.id.ic_favorite -> isConnectedFavorite()
-                R.id.ic_person -> isConnected()
+                R.id.ic_favorite -> isConnected(favoriteFragment)
+                R.id.ic_shopping -> replaceFragment(basketFragment)
+                R.id.ic_person -> isConnected(userInfo)
             }
             true
         }
     }
 
-    private fun isConnected() {
-        var connectedOrNot = preferences.getString("JWT", "")
-        println("connectedOrNot")
-        println(connectedOrNot)
-
-
-        if (connectedOrNot.isNullOrEmpty()) {
-            println("no connected")
-
-            replaceFragment(connectionFragment)
-        } else {
-            println("connected")
-            replaceFragment(userInfo)
-        }
-
-
-    }
-
-    private fun isConnectedFavorite() {
-        var connectedOrNot = preferences.getString("JWT", "")
+    private fun isConnected(myFragment: Fragment) {
+        val connectedOrNot = preferences.getString("JWT", "")
 
 
         if (connectedOrNot.isNullOrEmpty()) {
             replaceFragment(connectionFragment)
         } else {
-            replaceFragment(favoriteFragment)
+            replaceFragment(myFragment)
         }
 
 
     }
 
     private fun replaceFragment(fragment: Fragment) {
-        println(fragment)
         if (fragment != null) {
             val transaction = supportFragmentManager.beginTransaction()
             transaction.replace(R.id.fragment_container, fragment)

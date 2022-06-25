@@ -91,11 +91,14 @@ class SearchFragment : Fragment() {
 
         adapter.setOnItemClickListener(object : TypeAdapter.onItemClickListener {
             override fun onItemClick(position: Int) {
-//                val intent = Intent(context, ProductList::class.java)
-//                intent.putExtra("type", newArrayList[position].type)
-//                startActivity(intent)
-
-                replaceFragment(filterSearchFragment)
+                val bundle = Bundle()
+                bundle.putString("type", newArrayList[position].type)
+                println("type")
+                println(newArrayList[position].type)
+                filterSearchFragment.arguments = bundle
+                fragmentManager?.beginTransaction()
+                    ?.replace(R.id.fragment_container, filterSearchFragment)
+                    ?.commit()
 
 
             }

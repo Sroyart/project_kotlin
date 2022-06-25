@@ -36,6 +36,7 @@ class FavoriteFragment : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_favorite, container, false)
     }
+    
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -71,29 +72,39 @@ class FavoriteFragment : Fragment() {
 //            }
 //        }
         model.dataFavorite.observe(viewLifecycleOwner) {
+            if (model.threadFavoriteRunning.value == true) {
+                if ((model.dataFavorite.value != null)) {
+                    println("how many")
+                    if (it != null) {
+                        for (i in it.boxElements) {
+//                            println("test")
+                            ids += arrayOf(i.boxEmb.articleId)
+                            model.loadOneData(i.boxEmb.articleId.toString())
+                        }
+                    }
 
-            if ((it != null) && (model.threadFavoriteRunning.value == false)) {
-                for (i in it.boxElements) {
-                    println("test")
-                    ids += arrayOf(i.boxEmb.articleId)
-                    model.loadOneData(i.boxEmb.articleId.toString())
                 }
-
             }
+
         }
 
         model.dataOne.observe(viewLifecycleOwner) {
 //            println("threadOneFavoriteRunning : $it")
 //            println(model.dataOne.value)
-            if (it != null && model.threadOneFavoriteRunning.value == false) {
-                images += arrayOf(it.imagePath)
-                details += arrayOf(it.description)
-                prices += arrayOf(it.price)
-                titles += arrayOf(it.name)
-                showMeArrayList(titles)
-                getUserdata()
+            if (model.threadOneFavoriteRunning.value == true) {
 
+                if (it != null) {
+                    println("compteur")
+                    images += arrayOf(it.imagePath)
+                    details += arrayOf(it.description)
+                    prices += arrayOf(it.price)
+                    titles += arrayOf(it.name)
+                    println(titles.size)
+                    getUserdata()
+
+                }
             }
+
         }
 
         newRecyclerView = view.findViewById(R.id.recyclerView)

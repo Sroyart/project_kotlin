@@ -62,6 +62,7 @@ class ArticlesViewModel : ViewModel() {
         threadFavoriteRunning.postValue(true)
         dataFavorite.postValue(null)
         errorMessage.postValue(null)
+
         thread {
             try {
                 dataFavorite.postValue(
@@ -70,6 +71,7 @@ class ArticlesViewModel : ViewModel() {
                         url
                     )
                 )
+
             } catch (e: Exception) {
                 e.printStackTrace()
                 errorMessage.postValue(e.message)

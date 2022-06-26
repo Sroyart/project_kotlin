@@ -36,7 +36,7 @@ class FavoriteFragment : Fragment() {
     ): View? {
         return inflater.inflate(R.layout.fragment_favorite, container, false)
     }
-    
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -113,6 +113,8 @@ class FavoriteFragment : Fragment() {
         newRecyclerView.setHasFixedSize(true)
 
         newArrayList = arrayListOf()
+
+        getUserdata()
 
 
     }

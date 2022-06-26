@@ -51,8 +51,18 @@ class BasketFragment : Fragment() {
         prices = arrayOf()
         ids = arrayOf()
         amounts = arrayOf()
-
         val itemImage: TextView = view.findViewById(R.id.basket_tv_total_price)
+
+        newRecyclerView = view.findViewById(R.id.recyclerView)
+
+        newRecyclerView.layoutManager = LinearLayoutManager(context)
+        newRecyclerView.setHasFixedSize(true)
+
+        newArrayList = arrayListOf()
+        getUserdata()
+
+        "$total €".also { itemImage.text = it }
+
 
 
         preferences = activity?.getSharedPreferences("JWT", Context.MODE_PRIVATE)!!
@@ -64,39 +74,46 @@ class BasketFragment : Fragment() {
             val jwt = JWT(myJwt)
             var claim: String? = jwt.getClaim("id").asString()
 
-            model.loadFavoritesData("http://10.0.2.2:8083/basket/15")
+//            model.loadFavoritesData("http://10.0.2.2:8083/basket/$claim")
+            model.loadBasketData("http://10.0.2.2:8083/basket/$claim")
+
         }
 
-        model.dataFavorite.observe(viewLifecycleOwner) {
-            if (it != null) {
-                println(it)
-                for (i in it.boxElements) {
-                    ids += arrayOf(i.boxEmb.articleId)
-                    amounts += arrayOf(i.basketEmb.amount)
-//                    println(i.boxEmb.articleId.toString())
-                    model.loadOneData(i.boxEmb.articleId.toString())
-                }
-                getUserdata()
-            }
+
+        model.threadFavoriteRunning.observe(viewLifecycleOwner) {
+            println(it)
+
         }
 
-        model.dataOne.observe(viewLifecycleOwner) {
-            if (it != null) {
-                images += arrayOf(it.imagePath)
-                details += arrayOf(it.description)
-                prices += arrayOf(it.price)
-                titles += arrayOf(it.name)
-            }
-        }
+//            if (model.threadFavoriteRunning.value == true) {
+//                if (it != null) {
+//                    println(it.boxElements.size)
+//                    for (i in it.boxElements) {
+//                        ids += arrayOf(i.boxEmb.articleId)
+//                        println(i.boxEmb.articleId.toString())
+//
+////                        amounts += arrayOf(i.basketEmb.amount)
+////                        model.loadOneData(i.boxEmb.articleId.toString())
+//                    }
+////                    getUserdata()
+//                }
+//
+//
+//            }
 
-        newRecyclerView = view.findViewById(R.id.recyclerView)
 
-        newRecyclerView.layoutManager = LinearLayoutManager(context)
-        newRecyclerView.setHasFixedSize(true)
-
-        newArrayList = arrayListOf()
-
-        "$total €".also { itemImage.text = it }
+//        model.dataOne.observe(viewLifecycleOwner) {
+//            println(it)
+////            if (model.threadOneFavoriteRunning.value == true) {
+////                if (it != null) {
+////                    images += arrayOf(it.imagePath)
+////                    details += arrayOf(it.description)
+////                    prices += arrayOf(it.price)
+////                    titles += arrayOf(it.name)
+////                    println(titles.size)
+////                }
+////            }
+//        }
 
 
     }
@@ -105,11 +122,13 @@ class BasketFragment : Fragment() {
         total = 0
         newArrayList = arrayListOf()
         for (i in titles.indices) {
+            println("enter")
             val product =
                 BasketData(images[i], titles[i], details[i], prices[i], ids[i], amounts[i])
             newArrayList.add(product)
             total += prices[i] * amounts[i]
         }
+        println(newArrayList)
 
         var adapter = RecyclerBasketAdapter(newArrayList)
         newRecyclerView.adapter = adapter

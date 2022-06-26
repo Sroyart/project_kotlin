@@ -1,6 +1,7 @@
 package com.example.project_kotlin
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -15,7 +16,6 @@ class MainActivity : AppCompatActivity() {
     private val connectionFragment = ConnectionFragment()
     private val homeFragment = HomeFragment()
     private val searchFragment = SearchFragment()
-    private val userInfo = UserInfo()
     private val favoriteFragment = FavoriteFragment()
     private val basketFragment = BasketFragment()
     lateinit var toggle: ActionBarDrawerToggle
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.ic_search -> replaceFragment(searchFragment)
                 R.id.ic_favorite -> isConnected(favoriteFragment)
                 R.id.ic_shopping -> replaceFragment(basketFragment)
-                R.id.ic_person -> isConnected(userInfo)
+                R.id.ic_person -> logout()
             }
             true
         }
@@ -55,7 +55,17 @@ class MainActivity : AppCompatActivity() {
         } else {
             replaceFragment(myFragment)
         }
+    }
 
+    private fun logout() {
+        val connectedOrNot = preferences.getString("JWT", "")
+        if (connectedOrNot.isNullOrEmpty()) {
+            replaceFragment(connectionFragment)
+        } else {
+
+            val intent = Intent(this, LogoutActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 

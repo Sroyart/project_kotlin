@@ -11,6 +11,7 @@ class ArticlesViewModel : ViewModel() {
     val dataOne = MutableLiveData<ArticlesBeansItem?>()
     val dataRegister = MutableLiveData<String?>()
     val errorMessage = MutableLiveData<String?>()
+    val dataBasket = MutableLiveData<BasketFavoriteBeansItems?>()
     val threadRunning = MutableLiveData<Boolean>(false)
     val dataFavorite = MutableLiveData<BasketFavoriteBeansItems?>()
     val threadFavoriteRunning = MutableLiveData<Boolean>(false)
@@ -95,6 +96,28 @@ class ArticlesViewModel : ViewModel() {
                 errorMessage.postValue(e.message)
             }
             threadRunning.postValue(false)
+        }
+    }
+
+    fun loadBasketData(url: String) {
+        threadFavoriteRunning.postValue(true)
+        dataBasket.postValue(null)
+        errorMessage.postValue(null)
+
+        thread {
+            try {
+                dataBasket.postValue(
+                    RequestUtils.loadFavoritesArticles(
+                        "",
+                        url
+                    )
+                )
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                errorMessage.postValue(e.message)
+            }
+            threadFavoriteRunning.postValue(false)
         }
     }
 

@@ -23,7 +23,7 @@ class RecyclerBasketAdapter(private val newsList: ArrayList<BasketData>) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        var itemView =
+        val itemView =
             LayoutInflater.from(parent.context).inflate(R.layout.basket_list, parent, false)
         return ViewHolder(itemView, mListener)
     }

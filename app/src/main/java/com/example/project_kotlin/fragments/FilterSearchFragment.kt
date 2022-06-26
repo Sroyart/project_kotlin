@@ -66,7 +66,7 @@ class FilterSearchFragment : Fragment() {
             "http://10.0.2.2:8081/api/elk/fuzzy",
             "{\n" +
                     "    \"name\":\"\",\n" +
-                    "    \"category\":[\"kitchen\"],\n" +
+                    "    \"category\":[],\n" +
                     "    \"material\":[],\n" +
                     "    \"color\":[]\n" +
                     "}"
@@ -152,7 +152,7 @@ class FilterSearchFragment : Fragment() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 model.loadPostData(
-                    "http://10.0.2.2:8081/api/elk/fuzzy",
+                    "http://10.0.2.2:8081/elk/fuzzy",
                     "{\n" +
                             "    \"name\":\"$query\",\n" +
                             "    \"category\":[],\n" +
@@ -160,6 +160,7 @@ class FilterSearchFragment : Fragment() {
                             "    \"color\":[]\n" +
                             "}"
                 )
+                getUserdata()
 
 //                tempArrayList.clear()
 //                val searchText = query!!.toLowerCase(Locale.getDefault())

@@ -32,6 +32,8 @@ class BasketFragment : Fragment() {
     lateinit var ids: Array<Int>
     lateinit var amounts: Array<Int>
 
+    lateinit var myData: ArrayList<BasketData>
+
     var total: Int = 0
 
 
@@ -74,46 +76,44 @@ class BasketFragment : Fragment() {
             val jwt = JWT(myJwt)
             var claim: String? = jwt.getClaim("id").asString()
 
-//            model.loadFavoritesData("http://10.0.2.2:8083/basket/$claim")
-            model.loadBasketData("http://10.0.2.2:8083/basket/$claim")
+            model.loadFavoritesData("http://10.0.2.2:8083/basket/$claim")
+//            model.loadBasketData("http://10.0.2.2:8083/basket/$claim")
 
         }
 
 
-        model.threadFavoriteRunning.observe(viewLifecycleOwner) {
+        model.dataFavorite.observe(viewLifecycleOwner) {
+
             println(it)
+            if (model.threadFavoriteRunning.value == true) {
+                if (it != null) {
+                    model.loadBasketData(it)
+
+                }
+            }
 
         }
 
-//            if (model.threadFavoriteRunning.value == true) {
-//                if (it != null) {
-//                    println(it.boxElements.size)
-//                    for (i in it.boxElements) {
-//                        ids += arrayOf(i.boxEmb.articleId)
-//                        println(i.boxEmb.articleId.toString())
-//
-////                        amounts += arrayOf(i.basketEmb.amount)
-////                        model.loadOneData(i.boxEmb.articleId.toString())
-//                    }
-////                    getUserdata()
-//                }
-//
-//
-//            }
+        model.dataOne.observe(viewLifecycleOwner) {
 
+            if (it != null) {
+//                println("test")
+                println(it)
+                images += arrayOf(it.imagePath)
+                details += arrayOf(it.description)
+                prices += arrayOf(it.price)
+                titles += arrayOf(it.name)
+                ids += arrayOf(it.id)
+                amounts += arrayOf(1)
 
-//        model.dataOne.observe(viewLifecycleOwner) {
-//            println(it)
-////            if (model.threadOneFavoriteRunning.value == true) {
-////                if (it != null) {
-////                    images += arrayOf(it.imagePath)
-////                    details += arrayOf(it.description)
-////                    prices += arrayOf(it.price)
-////                    titles += arrayOf(it.name)
-////                    println(titles.size)
-////                }
-////            }
-//        }
+                println(titles.size)
+            }
+        }
+
+        model.threadBasketRunning.observe(viewLifecycleOwner) {
+            if (it == false)
+                getUserdata()
+        }
 
 
     }
@@ -122,7 +122,14 @@ class BasketFragment : Fragment() {
         total = 0
         newArrayList = arrayListOf()
         for (i in titles.indices) {
-            println("enter")
+            println(images.size)
+            println(titles.size)
+            println(details.size)
+            println(prices.size)
+            println(ids.size)
+            println(amounts.size)
+
+
             val product =
                 BasketData(images[i], titles[i], details[i], prices[i], ids[i], amounts[i])
             newArrayList.add(product)

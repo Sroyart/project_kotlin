@@ -65,7 +65,6 @@ class RequestUtils {
             return article
         }
 
-
         fun sendGet(url: String): String {
             val request = Request.Builder().url(url).build()
             return client.newCall(request).execute().use {

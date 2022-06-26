@@ -2,6 +2,7 @@ package com.example.project_kotlin.model
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.project_kotlin.BasketData
 import kotlin.concurrent.thread
 
 class ArticlesViewModel : ViewModel() {
@@ -16,6 +17,8 @@ class ArticlesViewModel : ViewModel() {
     val dataFavorite = MutableLiveData<BasketFavoriteBeansItems?>()
     val threadFavoriteRunning = MutableLiveData<Boolean>(false)
     val threadOneFavoriteRunning = MutableLiveData<Boolean>(false)
+    val dataBasketArray = MutableLiveData<BasketData>()
+    val threadBasketRunning = MutableLiveData<Boolean>(false)
 
     fun loadData(id: String) {
         threadRunning.postValue(true)
@@ -99,25 +102,34 @@ class ArticlesViewModel : ViewModel() {
         }
     }
 
-    fun loadBasketData(url: String) {
-        threadFavoriteRunning.postValue(true)
-        dataBasket.postValue(null)
+    fun loadBasketData(data: BasketFavoriteBeansItems) {
+        threadBasketRunning.postValue(true)
+        dataOne.postValue(null)
         errorMessage.postValue(null)
 
         thread {
             try {
-                dataBasket.postValue(
-                    RequestUtils.loadFavoritesArticles(
-                        "",
-                        url
+                for (i in data.boxElements) {
+                    println(i.boxEmb.articleId)
+
+
+                    dataOne.postValue(
+                        RequestUtils.loadOneArticles(
+                            "http://10.0.2.2:80/api/articles/${i.boxEmb.articleId}"
+                        )
                     )
-                )
+
+//                    images += arrayOf(dataBasket.imagePath)
+//                    details += arrayOf(it.description)
+//                   prices += arrayOf(it.price)
+//                   titles += arrayOf(it.name)
+                }
 
             } catch (e: Exception) {
                 e.printStackTrace()
                 errorMessage.postValue(e.message)
             }
-            threadFavoriteRunning.postValue(false)
+            threadBasketRunning.postValue(false)
         }
     }
 
@@ -140,6 +152,26 @@ class ArticlesViewModel : ViewModel() {
     }
 
     fun postConn(myUrl: String, query: String) {
+        threadRunning.postValue(true)
+        dataConn.postValue(null)
+        errorMessage.postValue(null)
+        thread {
+
+            try {
+                dataConn.postValue(
+                    RequestUtils.connPost(myUrl, query)
+                )
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                errorMessage.postValue(e.message)
+            }
+            threadRunning.postValue(false)
+        }
+
+    }
+
+    fun postFavorite(myUrl: String, query: String) {
         threadRunning.postValue(true)
         dataConn.postValue(null)
         errorMessage.postValue(null)

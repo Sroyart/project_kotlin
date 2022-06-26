@@ -1,6 +1,5 @@
 package com.example.project_kotlin.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
@@ -8,13 +7,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.project_kotlin.Product
 import com.example.project_kotlin.ProductsData
 import com.example.project_kotlin.R
 import com.example.project_kotlin.Recycler.RecyclerAdapter
-import com.example.project_kotlin.dialogFragment.FilterDialogFragment
 import com.example.project_kotlin.model.ArticlesViewModel
-import kotlinx.android.synthetic.main.fragment_filter_search.*
 import java.util.*
 
 class FilterSearchFragment : Fragment() {
@@ -136,13 +132,7 @@ class FilterSearchFragment : Fragment() {
 
         }
 
-        filterButton.setOnClickListener {
-            var dialog = FilterDialogFragment()
-
-            activity?.let { it1 -> dialog.show(it1.supportFragmentManager, "customDialog") }
-        }
-
-
+    
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -162,23 +152,6 @@ class FilterSearchFragment : Fragment() {
                 )
                 getUserdata()
 
-//                tempArrayList.clear()
-//                val searchText = query!!.toLowerCase(Locale.getDefault())
-//                if (searchText.isNotEmpty()) {
-//                    newArrayList.forEach {
-//                        if (it.title.toLowerCase(Locale.getDefault()).contains(searchText)) {
-//                            tempArrayList.add(it)
-//                        }
-//                    }
-//
-//                    newRecyclerView.adapter!!.notifyDataSetChanged()
-//                } else {
-//
-//                    tempArrayList.clear()
-//                    tempArrayList.addAll(newArrayList)
-//                    newRecyclerView.adapter!!.notifyDataSetChanged()
-//                }
-
                 return false
             }
 
@@ -190,8 +163,8 @@ class FilterSearchFragment : Fragment() {
     }
 
     private fun getUserdata() {
-        newArrayList = arrayListOf<ProductsData>()
-        tempArrayList = arrayListOf<ProductsData>()
+        newArrayList = arrayListOf()
+        tempArrayList = arrayListOf()
         for (i in titles.indices) {
             val product = ProductsData(imageId[i], titles[i], details[i], prices[i], ids[i])
             newArrayList.add(product)
@@ -202,11 +175,16 @@ class FilterSearchFragment : Fragment() {
 
         adapter.setOnItemClickListener(object : RecyclerAdapter.onItemClickListener {
             override fun onItemClick(position: Int) {
-                val intent = Intent(context, Product::class.java)
-                intent.putExtra("imageId", newArrayList[position].image)
-                intent.putExtra("titles", newArrayList[position].title)
-                intent.putExtra("details", newArrayList[position].detail)
-                startActivity(intent)
+                val bundle = Bundle()
+                bundle.putString("titleData", newArrayList[position].title)
+                bundle.putString("titleDetail", newArrayList[position].detail)
+                bundle.putString("titleImage", newArrayList[position].image)
+                bundle.putInt("titlePrice", newArrayList[position].price)
+                bundle.putInt("idData", newArrayList[position].id)
+                val fragment = ProductFragment()
+                fragment.arguments = bundle
+                fragmentManager?.beginTransaction()?.replace(R.id.fragment_container, fragment)
+                    ?.commit()
             }
 
         })

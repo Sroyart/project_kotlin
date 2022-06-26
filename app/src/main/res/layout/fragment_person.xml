@@ -17,6 +17,15 @@
         tools:layout_editor_absoluteY="197dp">
 
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Connection"
+            android:textColor="@color/black"
+            android:textSize="30dp"
+
+            android:textStyle="bold" />
+
         <EditText
             android:id="@+id/et_person_email"
             android:layout_width="match_parent"
@@ -51,6 +60,7 @@
 
             <Button
                 android:id="@+id/btn_conn"
+                android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/button_style"

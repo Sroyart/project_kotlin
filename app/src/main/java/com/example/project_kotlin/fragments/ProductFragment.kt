@@ -7,22 +7,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.auth0.android.jwt.JWT
 import com.example.project_kotlin.PaymentActivity
 import com.example.project_kotlin.R
 import com.example.project_kotlin.model.ArticlesViewModel
-import com.example.project_kotlin.model.MEDIA_TYPE_JSON
-import com.example.project_kotlin.model.client
 import com.squareup.picasso.Picasso
-import kotlinx.coroutines.launch
-import okhttp3.Request
-import okhttp3.RequestBody.Companion.toRequestBody
 
 
 class ProductFragment : Fragment() {
@@ -40,8 +32,10 @@ class ProductFragment : Fragment() {
         val textViewDetailProduct: TextView = view.findViewById(R.id.tv_product_detail)
         val textViewImageProduct: ImageView = view.findViewById(R.id.img_product_image)
         val textViewPriceProduct: TextView = view.findViewById(R.id.tv_product_price)
-        val btnBasket: TextView = view.findViewById(R.id.btn_basket)
+        val btnPayment: TextView = view.findViewById(R.id.btn_payment)
         val checkBoxFavProduct: CheckBox = view.findViewById(R.id.checkBox_fav_product)
+        val btn_add_basket: Button = view.findViewById(R.id.btn_add_basket)
+        val etProductNumber: EditText = view.findViewById(R.id.et_product_number)
 
         val args = this.arguments
         val productTitle = args?.get("titleData")
@@ -85,9 +79,29 @@ class ProductFragment : Fragment() {
             .into(textViewImageProduct)
         textViewPriceProduct.text = productPrice.toString() + " €"
 
-        btnBasket.setOnClickListener {
+        btn_add_basket.setOnClickListener {
+            model.loadPostData(
+                "http://10.0.2.2:8083/basket", "{\n" +
+                        "    \"customerId\": $claim,\n" +
+                        "    \"basketEmb\": {\n" +
+                        "        \"amount\": ${etProductNumber.text}\n" +
+                        "    },\n" +
+                        "    \"boxEmb\": {\n" +
+                        "        \"articleId\": $productId\n" +
+                        "    }\n" +
+                        "}"
+            )
+
+
+        }
+
+        btnPayment.setOnClickListener {
             val intent = Intent(context, PaymentActivity::class.java)
             startActivity(intent)
+        }
+
+        model.dataElk.observe(viewLifecycleOwner) {
+            Toast.makeText(context, "Ajouté au panier", Toast.LENGTH_SHORT).show()
         }
 
 
@@ -95,42 +109,35 @@ class ProductFragment : Fragment() {
 
 
         checkBoxFavProduct.setOnClickListener {
-            if (checkBoxFavProduct.isChecked)
-                lifecycleScope.launch {
-                    sendPost(
-                        "http://localhost:8083/favorite", "{\n" +
-                                "    \"customerId\": $claim,\n" +
-                                "    \"boxEmb\": {\n" +
-                                "        \"articleId\": $productId\n" +
-                                "    }\n" +
-                                "}"
-                    )
-                }
+            if (checkBoxFavProduct.isChecked) {
+                model.loadPostData(
+
+                    "http://10.0.2.2:8083/favorite", "{\n" +
+                            "    \"customerId\": $claim,\n" +
+                            "    \"boxEmb\": {\n" +
+                            "        \"articleId\": $productId\n" +
+                            "    }\n" +
+                            "}"
+                )
+
+
+            } else {
+                model.loadPostData(
+
+                    "http://10.0.2.2:8083/favorite/remove", "{\n" +
+                            "    \"customerId\": $claim,\n" +
+                            "    \"articleId\": $productId\n" +
+                            "}"
+                )
+                println(checkBoxFavProduct.isChecked)
+
+            }
+
         }
 
 
 
         return view
-    }
-
-    fun sendPost(url: String, paramJson: String): String {
-        println(paramJson)
-
-        //Corps de la requête
-        val body = paramJson.toRequestBody(MEDIA_TYPE_JSON)
-
-        //Création de la requete
-        val request = Request.Builder().url(url).post(body).build()
-
-        //Execution de la requête
-        return client.newCall(request).execute().use {
-            //Analyse du code retour
-            if (!it.isSuccessful) {
-                throw Exception("Réponse du serveur incorrect :${it.code}")
-            }
-            //Résultat de la requete
-            it.body?.string() ?: ""
-        }
     }
 
 

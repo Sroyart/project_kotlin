@@ -40,25 +40,22 @@ class SearchFragment : Fragment() {
 
         newRecyclerView.layoutManager = LinearLayoutManager(context)
         newRecyclerView.setHasFixedSize(true)
+        
 
-        newArrayList = arrayListOf()
-        tempArrayList = arrayListOf()
-        id = arrayOf(0)
-        type = arrayOf("Tous")
 
         model.loadCategories("http://10.0.2.2:80/api/categories")
 
         model.dataCategories.observe(viewLifecycleOwner) {
+            id = arrayOf(0)
+            type = arrayOf("Tous")
             if (it != null) {
-                if (model.threadOneCategoriesRunning.value == false) {
-
-                    for (i in it) {
-                        id += arrayOf(i.id)
-                        type += arrayOf(i.room)
-                    }
-                    getUserdata()
-
+                println(it)
+                for (i in it) {
+                    id += arrayOf(i.id)
+                    type += arrayOf(i.room)
                 }
+                getUserdata()
+
 
             }
         }
@@ -100,6 +97,8 @@ class SearchFragment : Fragment() {
     }
 
     private fun getUserdata() {
+        newArrayList = arrayListOf()
+        tempArrayList = arrayListOf()
         for (i in type.indices) {
             val product = TypeData(id[i], type[i])
             newArrayList.add(product)

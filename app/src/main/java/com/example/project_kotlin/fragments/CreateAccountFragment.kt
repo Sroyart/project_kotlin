@@ -24,7 +24,7 @@ class CreateAccountFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_create_account, container, false)
         val connBtn: Button = view.findViewById(R.id.btn_conn_account)
         connBtn.setOnClickListener {
-            val fragment = ConnectionFragment()
+            val fragment = LoginFragment()
             val transaction = fragmentManager?.beginTransaction()
             transaction?.replace(R.id.fragment_container, fragment)?.commit()
         }
@@ -46,6 +46,11 @@ class CreateAccountFragment : Fragment() {
                             "    \"lastName\":\"${et_create_lastName.text}\"\n" +
                             "}"
                 )
+                Toast.makeText(
+                    context,
+                    "Un email de verification vous a été envoyé.",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
 

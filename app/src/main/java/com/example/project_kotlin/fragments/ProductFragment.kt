@@ -41,8 +41,8 @@ class ProductFragment : Fragment() {
         val productTitle = args?.get("titleData")
         val productDetail = args?.get("titleDetail")
         val productImage = args?.get("titleImage") as String
-        val productPrice = args?.get("titlePrice")
-        val productId = args?.get("idData")
+        val productPrice = args.get("titlePrice")
+        val productId = args.get("idData")
 
         preferences = activity?.getSharedPreferences("JWT", Context.MODE_PRIVATE)!!
 
@@ -53,10 +53,10 @@ class ProductFragment : Fragment() {
             val jwt = JWT(myJwt)
             claim = jwt.getClaim("id").asString().toString()
 
-            model.loadFavoritesData("http://10.0.2.2:8083/favorite/$claim")
+            model.loadFavoritesBasketsData("http://10.0.2.2:8083/favorite/$claim")
         }
 
-        model.dataFavorite.observe(viewLifecycleOwner) {
+        model.dataFavoriteBasket.observe(viewLifecycleOwner) {
             if (it != null) {
                 for (i in it.boxElements) {
                     if (productId == i.boxEmb.articleId) {
@@ -77,7 +77,7 @@ class ProductFragment : Fragment() {
         Picasso.get()
             .load(productImage)
             .into(textViewImageProduct)
-        textViewPriceProduct.text = productPrice.toString() + " €"
+        (productPrice.toString() + " €").also { textViewPriceProduct.text = it }
 
         btn_add_basket.setOnClickListener {
             model.loadPostData(
@@ -96,6 +96,7 @@ class ProductFragment : Fragment() {
         }
 
         btnPayment.setOnClickListener {
+            //Payment pas implementé
             val intent = Intent(context, PaymentActivity::class.java)
             startActivity(intent)
         }
@@ -110,6 +111,8 @@ class ProductFragment : Fragment() {
 
         checkBoxFavProduct.setOnClickListener {
             if (checkBoxFavProduct.isChecked) {
+
+                //Post favorité pas implémenté en back end
                 model.loadPostData(
 
                     "http://10.0.2.2:8083/favorite", "{\n" +
@@ -122,6 +125,7 @@ class ProductFragment : Fragment() {
 
 
             } else {
+                //Supression des data en favorie
                 model.loadPostData(
 
                     "http://10.0.2.2:8083/favorite/remove", "{\n" +

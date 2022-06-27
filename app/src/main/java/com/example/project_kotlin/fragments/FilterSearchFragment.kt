@@ -43,10 +43,6 @@ class FilterSearchFragment : Fragment() {
         return view
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         imageId = arrayOf()
@@ -119,20 +115,11 @@ class FilterSearchFragment : Fragment() {
                 } else {
                     println(it.hits.hits.size)
                 }
-//                println("hits : " + it?.hits?.hits[0])
-//                if (it?.hits?.hits[0] === null) {
-//                    for (i in it.hits.hits.indices) {
-//                        println(it.hits.hits[i])
-//                        titles += arrayOf(it.hits.hits[i]._index)
-//                    }
-//                }
-//                println(titles)
-//                getUserdata()
             }
 
         }
 
-    
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -141,6 +128,7 @@ class FilterSearchFragment : Fragment() {
         val searchView = item?.actionView as SearchView
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
+                //Ici j'envoie ma requete pour elasticksearch name fonctionne mais les autres ne sont pas implémenté dans l'api
                 model.loadPostData(
                     "http://10.0.2.2:8081/elk/fuzzy",
                     "{\n" +
@@ -188,11 +176,5 @@ class FilterSearchFragment : Fragment() {
             }
 
         })
-    }
-
-    private fun showMeArrayList(arrayList: Array<String>) {
-        for (element in arrayList) {
-            println(element)
-        }
     }
 }

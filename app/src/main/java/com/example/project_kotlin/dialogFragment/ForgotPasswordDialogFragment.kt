@@ -13,6 +13,9 @@ import kotlinx.android.synthetic.main.forgot_password.*
 import kotlinx.android.synthetic.main.forgot_password.view.*
 
 class ForgotPasswordDialogFragment : DialogFragment() {
+
+    //Ce fragment et une popup pour réinitialiser son mot de passe
+
     val model by lazy { ViewModelProvider(this).get(ArticlesViewModel::class.java) }
 
     override fun onCreateView(

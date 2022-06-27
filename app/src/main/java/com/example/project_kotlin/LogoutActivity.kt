@@ -30,7 +30,6 @@ class LogoutActivity : AppCompatActivity() {
         preferences = getSharedPreferences("JWT", Context.MODE_PRIVATE)
 
         val myJwt = preferences.getString("JWT", "")
-        println("JWT null")
         val jwt = JWT(myJwt.toString())
         tvUserFirstName.text = jwt.getClaim("firstName").asString()
         tvUserLastName.text = jwt.getClaim("lastName").asString()

@@ -11,6 +11,8 @@ class PaymentActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_payment)
 
+        //Payment pas implémenté en back et front
+
 //        stripe = Stripe(
 //            this,
 //            PaymentConfiguration.getInstance(applicationContext).publishableKey

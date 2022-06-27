@@ -14,10 +14,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.project_kotlin.R
 import com.example.project_kotlin.dialogFragment.ForgotPasswordDialogFragment
 import com.example.project_kotlin.model.ArticlesViewModel
-import kotlinx.android.synthetic.main.fragment_person.*
+import kotlinx.android.synthetic.main.fragment_login.*
 
 
-class ConnectionFragment : Fragment() {
+class LoginFragment : Fragment() {
     val model by lazy { ViewModelProvider(this).get(ArticlesViewModel::class.java) }
     val homeFragment = HomeFragment()
 
@@ -28,8 +28,7 @@ class ConnectionFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_person, container, false)
+        val view = inflater.inflate(R.layout.fragment_login, container, false)
         val createBtn: Button = view.findViewById(R.id.btn_create_account)
         createBtn.setOnClickListener {
             val fragment = CreateAccountFragment()
@@ -43,11 +42,13 @@ class ConnectionFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        var btnConn: Button = view.findViewById(R.id.btn_conn)
-        var tvPersonUserName: TextView = view.findViewById(R.id.et_person_email)
-        var tvPersonPassword: TextView = view.findViewById(R.id.et_person_password)
+        val btnConn: Button = view.findViewById(R.id.btn_conn)
+        val tvPersonUserName: TextView = view.findViewById(R.id.et_person_email)
+        val tvPersonPassword: TextView = view.findViewById(R.id.et_person_password)
 
         btnConn.setOnClickListener {
+
+            //Envoie des infos de l'utilisateur pour la connection
 
             if (et_person_email.text.isNullOrBlank()) {
                 Toast.makeText(context, "Remplissez le champ", Toast.LENGTH_SHORT).show()
@@ -77,10 +78,10 @@ class ConnectionFragment : Fragment() {
         model.dataConn.observe(viewLifecycleOwner) {
             sharedPreferences = activity?.getSharedPreferences("JWT", Context.MODE_PRIVATE)!!
 
-            println("its in")
             if (it != null) {
                 println(it.jwt)
 
+                //Je sauvegarde le JWT dans le sharedPreferences
                 val editor: SharedPreferences.Editor = sharedPreferences.edit()
                 editor.putString("JWT", it.jwt)
                 editor.apply()
@@ -95,11 +96,9 @@ class ConnectionFragment : Fragment() {
 
     private fun replaceFragment(fragment: Fragment) {
         println(fragment)
-        if (fragment != null) {
-            val transaction = requireActivity().supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragment_container, fragment)
-            transaction.commit()
-        }
+        val transaction = requireActivity().supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.fragment_container, fragment)
+        transaction.commit()
     }
 
 

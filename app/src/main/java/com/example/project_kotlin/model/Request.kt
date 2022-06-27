@@ -13,15 +13,25 @@ val client = OkHttpClient()
 
 class RequestUtils {
     companion object {
-        fun loadArticles(myArticle: String, myUrl: String): ArticlesBeans {
+        fun loadArticles(myUrl: String): ArticlesBeans {
             val json: String = sendGet(myUrl.format())
             val article = gson.fromJson(json, ArticlesBeans::class.java)
 
             return article
         }
 
-        fun loadOneArticles(myUrl: String): ArticlesBeansItem {
+        fun loadCategories(myUrl: String): CategoriesBeans {
             val json: String = sendGet(myUrl.format())
+            val categories = gson.fromJson(json, CategoriesBeans::class.java)
+
+            return categories
+        }
+
+
+        fun loadArticlesByIds(myUrl: String, query: String): ArticlesBeansItem {
+            val json: String = sendPost(
+                myUrl.format(""), query
+            )
             val article = gson.fromJson(json, ArticlesBeansItem::class.java)
 
             return article
@@ -42,13 +52,10 @@ class RequestUtils {
             return article
         }
 
-        fun registerPost(myUrl: String, query: String): String {
-            val json: String = sendPost(
+        fun registerPost(myUrl: String, query: String) {
+            sendPost(
                 myUrl.format(""), query
             )
-            val article = gson.fromJson(json, RegisterBeans::class.java)
-
-            return "article"
         }
 
         fun connPost(myUrl: String, query: String): JwtBeans {

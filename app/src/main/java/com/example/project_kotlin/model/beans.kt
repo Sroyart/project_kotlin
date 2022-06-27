@@ -57,10 +57,14 @@ data class Source(
     val articleId: Int
 )
 
-data class RegisterBeans(
-    val test: String
-)
-
 data class JwtBeans(
     val jwt: String
+)
+
+class CategoriesBeans : ArrayList<CategoriesBeansItem>()
+
+data class CategoriesBeansItem(
+    val articles: List<Any>,
+    val id: Int,
+    val room: String
 )

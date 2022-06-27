@@ -46,6 +46,8 @@ class FavoriteFragment : Fragment() {
         prices = arrayOf()
         ids = arrayOf()
 
+        //Je récupère le jwt pour avoir l'id et faire des requettes
+
         preferences = activity?.getSharedPreferences("JWT", Context.MODE_PRIVATE)!!
 
         val myJwt = preferences.getString("JWT", "")
@@ -55,56 +57,45 @@ class FavoriteFragment : Fragment() {
             val jwt = JWT(myJwt)
             var claim: String? = jwt.getClaim("id").asString()
 
-            model.loadFavoritesData("http://10.0.2.2:8083/favorite/$claim")
+            //je get les id des favories
+            //Requette qui permet de récupère les favories n'est pas encore implementé en back-end
+
+            model.loadFavoritesBasketsData("http://10.0.2.2:8083/favorite/$claim")
         }
 
-//        model.dataFavorite.observe(viewLifecycleOwner) {
-//            println("test")
-//            println(it)
-//            println("test")
-//
-//            if (it != null) {
-//                for (i in it.boxElements) {
-//                    ids += arrayOf(i.boxEmb.articleId)
-//                    model.loadOneData(i.boxEmb.articleId.toString())
-//                }
-//                getUserdata()
-//            }
-//        }
-        model.dataFavorite.observe(viewLifecycleOwner) {
-            if (model.threadFavoriteRunning.value == true) {
-                if ((model.dataFavorite.value != null)) {
-                    println("how many")
-                    if (it != null) {
-                        for (i in it.boxElements) {
-//                            println("test")
-                            ids += arrayOf(i.boxEmb.articleId)
-                            model.loadOneData(i.boxEmb.articleId.toString())
-                        }
-                    }
-
+        model.dataFavoriteBasket.observe(viewLifecycleOwner) {
+            if (it != null) {
+                println(it)
+                for (i in it.boxElements) {
+                    ids += arrayOf(i.boxEmb.articleId)
                 }
+
+                //je get les id des favories
+                //Requette qui permet de récupère les favories grace a un tableau d'id n'est pas encore implementé en back-end
+                model.loadArticlesByIds(
+                    "{\n" +
+                            "    \"articleIds\":$ids\n" +
+                            "}"
+                )
+
+
             }
 
         }
 
         model.dataOne.observe(viewLifecycleOwner) {
-//            println("threadOneFavoriteRunning : $it")
-//            println(model.dataOne.value)
-            if (model.threadOneFavoriteRunning.value == true) {
+            //Le backend ne l'a pas encore implémenté donc pas encore fonctionnel
+            if (it != null) {
+                images += arrayOf(it.imagePath)
+                details += arrayOf(it.description)
+                prices += arrayOf(it.price)
+                titles += arrayOf(it.name)
 
-                if (it != null) {
-                    println("compteur")
-                    images += arrayOf(it.imagePath)
-                    details += arrayOf(it.description)
-                    prices += arrayOf(it.price)
-                    titles += arrayOf(it.name)
-                    println(titles.size)
-                    getUserdata()
-
-                }
             }
+        }
 
+        model.dataOne.observe(viewLifecycleOwner) {
+            println(it)
         }
 
         newRecyclerView = view.findViewById(R.id.recyclerView)
@@ -147,7 +138,7 @@ class FavoriteFragment : Fragment() {
         })
     }
 
-    private fun showMeArrayList(arrayList: Array<String>) {
+    private fun showMeArrayList(arrayList: Array<Int>) {
         for (element in arrayList) {
             println(element)
         }

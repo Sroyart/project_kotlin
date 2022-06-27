@@ -15,8 +15,6 @@ import com.example.project_kotlin.model.ArticlesViewModel
 
 class HomeFragment : Fragment() {
 
-    private var layoutManager: RecyclerView.LayoutManager? = null
-    private var adapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>? = null
     val model by lazy { ViewModelProvider(this).get(ArticlesViewModel::class.java) }
 
     private lateinit var newRecyclerView: RecyclerView
@@ -44,6 +42,7 @@ class HomeFragment : Fragment() {
         prices = arrayOf()
         ids = arrayOf()
 
+        //Récuperation des artcles
         model.loadData("")
 
         newRecyclerView = view.findViewById(R.id.recyclerView)
@@ -54,9 +53,10 @@ class HomeFragment : Fragment() {
         newArrayList = arrayListOf()
 
 
+        //execution suite a loadData
         model.data.observe(viewLifecycleOwner) {
             titles = arrayOf()
-
+            //tableau rempli pour le recycler view
             if (it?.get(0)?.name.isNullOrEmpty()) {
                 println("nothing")
             } else {
@@ -78,6 +78,7 @@ class HomeFragment : Fragment() {
 
     }
 
+    //recycler view va afficher les data
     private fun getUserdata() {
         newArrayList = arrayListOf()
         for (i in titles.indices) {
@@ -103,11 +104,5 @@ class HomeFragment : Fragment() {
             }
 
         })
-    }
-
-    private fun showMeArrayList(arrayList: Array<String>) {
-        for (element in arrayList) {
-            println(element)
-        }
     }
 }

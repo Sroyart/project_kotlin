@@ -27,9 +27,6 @@ class TypeAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentItem = newsList[position]
-//        holder.itemImage.setImageResource(currentItem.image)
-//        holder.itemTitle.text = currentItem.title
-//        holder.itemDetail.text = currentItem.detail
         holder.type.text = currentItem.type
 
     }

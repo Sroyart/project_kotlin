@@ -32,7 +32,6 @@ class BasketFragment : Fragment() {
     lateinit var ids: Array<Int>
     lateinit var amounts: Array<Int>
 
-    lateinit var myData: ArrayList<BasketData>
 
     var total: Int = 0
 
@@ -76,48 +75,48 @@ class BasketFragment : Fragment() {
             val jwt = JWT(myJwt)
             var claim: String? = jwt.getClaim("id").asString()
 
-            model.loadFavoritesData("http://10.0.2.2:8083/basket/$claim")
-//            model.loadBasketData("http://10.0.2.2:8083/basket/$claim")
+            model.loadFavoritesBasketsData("http://10.0.2.2:8083/basket/$claim")
 
         }
 
 
-        model.dataFavorite.observe(viewLifecycleOwner) {
-
-            println(it)
-            if (model.threadFavoriteRunning.value == true) {
-                if (it != null) {
-                    model.loadBasketData(it)
-
+        model.dataFavoriteBasket.observe(viewLifecycleOwner) {
+            if (it != null) {
+                println(it)
+                for (i in it.boxElements) {
+                    ids += arrayOf(i.boxEmb.articleId)
+                    amounts += arrayOf(i.basketEmb.amount)
                 }
+
+                //je get les id du panier
+                //Requette qui permet de récupère le panier n'est pas encore implementé en back-end
+                model.loadArticlesByIds(
+                    "{\n" +
+                            "    \"articleIds\":$ids\n" +
+                            "}"
+                )
+
+
             }
 
         }
 
         model.dataOne.observe(viewLifecycleOwner) {
-
+            //Le backend ne l'a pas encore implémenté donc pas encore fonctionnel
             if (it != null) {
-//                println("test")
-                println(it)
                 images += arrayOf(it.imagePath)
                 details += arrayOf(it.description)
                 prices += arrayOf(it.price)
                 titles += arrayOf(it.name)
-                ids += arrayOf(it.id)
-                amounts += arrayOf(1)
 
-                println(titles.size)
             }
-        }
-
-        model.threadBasketRunning.observe(viewLifecycleOwner) {
-            if (it == false)
-                getUserdata()
         }
 
 
     }
 
+
+    //Fonction permettant de lister les item comme dans le fragment home
     private fun getUserdata() {
         total = 0
         newArrayList = arrayListOf()

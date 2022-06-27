@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private val connectionFragment = ConnectionFragment()
+    private val connectionFragment = LoginFragment()
     private val homeFragment = HomeFragment()
     private val searchFragment = SearchFragment()
     private val favoriteFragment = FavoriteFragment()
@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.ic_home -> replaceFragment(homeFragment)
                 R.id.ic_search -> replaceFragment(searchFragment)
                 R.id.ic_favorite -> isConnected(favoriteFragment)
-                R.id.ic_shopping -> replaceFragment(basketFragment)
+                R.id.ic_shopping -> isConnected(basketFragment)
                 R.id.ic_person -> logout()
             }
             true
